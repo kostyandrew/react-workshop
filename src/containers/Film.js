@@ -1,35 +1,38 @@
 import React from "react";
+import { syncFilms } from "../actions/films";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 export default function (RenderComponent) {
-	return class extends React.Component {
-		constructor(props) {
-			super(props);
-
-			this.state = {
-				data: null,
-				error: false
-			};
-		}
-
+	class Wrapper extends React.Component {
 		componentWillMount() {
-			const { match: { params: { id } } } = this.props;
-			fetch(`https://swapi.co/api/films/${id}`)
-				.then((response) => {
-					if (response.ok) {
-						return response.json();
-					} else {
-						this.setState({ error: response.status });
-						return null;
-					}
-				})
-				.then((data) => this.setState({ data }))
-				.catch((e) => console.error(e))
+			this.props.syncFilms();
 		}
 
 		render() {
-			const { data, error } = this.state;
+			const { Film, Loading } = this.props;
+			const error = Film === null && !Loading ? 404 : false;
 
-			return <RenderComponent {...this.props} data={data} error={error}/>;
+			return <RenderComponent {...this.props} data={Film} error={error} loading={Loading}/>;
 		}
 	}
+
+	const mapStateToProps = (state, props) => {
+		const { match: { params: { id } } } = props;
+		return ({
+			Loading: state.Films.loading,
+			Film: state.Films.data.reduce((acc, elem) =>
+					elem.url.match(/\d/)[0] === id
+						? elem
+						: acc,
+				null
+			)
+		})
+			;
+	};
+	const mapDispatchToProps = (dispatch) => bindActionCreators({
+		syncFilms
+	}, dispatch);
+
+	return connect(mapStateToProps, mapDispatchToProps)(Wrapper);
 }

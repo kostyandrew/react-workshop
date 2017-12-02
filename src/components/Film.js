@@ -5,10 +5,10 @@ import NoMatch from "./NoMatch";
 
 class Film extends React.Component {
 	render() {
-		const { data, error } = this.props;
+		const { data, error, loading } = this.props;
 		return error === 404 ?
 			<NoMatch />
-			: data
+			: !loading
 				? (<div>
 					<Link to="/films">Back to films</Link>
 					<h1>{data.title} #{data.episode_id}</h1>

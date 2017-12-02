@@ -1,5 +1,6 @@
 const defaultState = {
 	loading: false,
+	loaded: false,
 	data: []
 };
 
@@ -8,7 +9,7 @@ export default function (state = defaultState, action) {
 		case "START_SYNC_FILMS":
 			return {...state, loading: true};
 		case "END_SYNC_FILMS":
-			return {...state, loading: false};
+			return {...state, loading: false, loaded: true};
 		case "SAVE_FILMS":
 			return {...state, data: action.data};
 		default:

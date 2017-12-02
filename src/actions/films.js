@@ -12,6 +12,7 @@ const saveFilms = (data) => ({
 });
 
 export const syncFilms = () => (dispatch, getState) => {
+	if(getState().Films.loaded) return;
 	dispatch(startSyncFilms());
 	fetch("https://swapi.co/api/films/")
 		.then((response) => response.json())
