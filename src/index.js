@@ -7,6 +7,7 @@ import rootReducer from "./reducers/index";
 
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
+import {getStore, setStore} from "./localStorage";
 import thunk from 'redux-thunk';
 
 import registerServiceWorker from './registerServiceWorker';
@@ -16,11 +17,14 @@ import {
 
 const store = createStore(
 	rootReducer,
+	getStore(),
 	compose(
 		applyMiddleware(thunk),
 		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	)
 );
+
+store.subscribe(() => setStore(store.getState()));
 
 
 ReactDOM.render(
