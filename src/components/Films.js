@@ -4,11 +4,12 @@ import connectFilms from "../containers/Films";
 
 class Films extends React.Component {
 	render() {
-		const { data } = this.props;
-		return data
+		const { data, loading } = this.props;
+
+		return !loading
 			? data.map((film) => {
-				const id = (film.url.match(/\d/)[0]);
-				return (
+					const id = (film.url.match(/\d/)[0]);
+					return (
 						<div key={film.episode_id}>
 							<h1>
 								<Link to={`/films/${id}`}>

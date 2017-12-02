@@ -1,26 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux'
+import { syncFilms } from "../actions/films";
+
 
 export default function (RenderComponent) {
-	return class extends React.Component {
-		constructor(props) {
-			super(props);
-
-			this.state = {
-				data: null
-			};
-		}
-
+	class Wrapper extends React.Component {
 		componentWillMount() {
-			fetch("https://swapi.co/api/films/")
-				.then((response) => response.json())
-				.then(({results: data}) => this.setState({data}))
-				.catch((e) => console.error(e));
+			this.props.syncFilms();
 		}
 
 		render() {
-			const {data} = this.state;
+			const { Films: { data, loading } } = this.props;
 
-			return <RenderComponent {...this.props} data={data}/>;
+			return <RenderComponent {...this.props} data={data} loading={loading} />;
 		}
 	}
+
+	const mapStateToProps = state => ({ Films: state.Films });
+	const mapDispatchToProps = (dispatch) => bindActionCreators({
+		syncFilms
+	}, dispatch);
+
+	return connect(mapStateToProps, mapDispatchToProps)(Wrapper);
 }
