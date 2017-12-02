@@ -3,6 +3,8 @@ import './App.css';
 
 import Home from "./components/Home";
 import Films from "./components/Films";
+import Film from "./components/Film";
+import NoMatch from "./components/NoMatch";
 
 import {
 	Route,
@@ -16,7 +18,8 @@ class Routes extends Component {
 				<Switch>
 					<Route path="/" exact component={Home}/>
 					<Route path="/films" exact component={Films}/>
-					<Route render={() => "404"} />
+					<Route path="/films/:id" exact component={Film}/>
+					<Route component={NoMatch} />
 				</Switch>
 			</div>
 		);
