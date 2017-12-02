@@ -3,3 +3,21 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.main-nav {
+  background: #343434;
+  padding: 1rem;
+  color: #ccc;
+}
+
+.main-nav a {
+  color: white;
+}
+.main-nav a:hover,
+.main-nav a:focus {
+  color: #b0b0b0;
+}
+
+.main-nav a.active {
+  color: #7b0046;
+}

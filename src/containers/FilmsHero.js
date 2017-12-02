@@ -1,25 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { syncPeople } from "../actions/people";
+import { syncFilms } from "../actions/films";
 
 
 export default function (RenderComponent) {
 	class Wrapper extends React.Component {
 		componentWillMount() {
-			this.props.syncPeople();
+			this.props.syncFilms();
 		}
 
 		render() {
-			const { People: { data, loading } } = this.props;
+			const { Films: { data, loading } } = this.props;
 
-			return <RenderComponent data={loading ? [] : data} loading={loading} />;
+			return <RenderComponent {...this.props} dataFilms={data} loadingFilms={loading} />;
 		}
 	}
 
-	const mapStateToProps = state => ({ People: state.People });
+	const mapStateToProps = state => ({ Films: state.Films });
 	const mapDispatchToProps = (dispatch) => bindActionCreators({
-		syncPeople
+		syncFilms
 	}, dispatch);
 
 	return connect(mapStateToProps, mapDispatchToProps)(Wrapper);

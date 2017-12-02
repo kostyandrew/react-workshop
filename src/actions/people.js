@@ -14,16 +14,16 @@ const addPeople = (data) => ({
 export const syncPeople = () => (dispatch, getState) => {
 	if(getState().People.loaded) return;
 	dispatch(startSyncPeople());
-	makeRequest("https://swapi.co/api/films/");
+	makeRequest("https://swapi.co/api/people/", dispatch);
 };
 
-const makeRequest = (url) =>
+const makeRequest = (url, dispatch) =>
 	fetch(url)
 		.then((response) => response.json())
 		.then(({ results: data, next }) => {
 			dispatch(addPeople(data));
 			if(next) {
-				makeRequest(next);
+				makeRequest(next, dispatch);
 			} else {
 				dispatch(endSyncPeople());
 			}
